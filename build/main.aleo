@@ -1,4 +1,4 @@
-program zk_dao_cli_v0_0_3.aleo;
+program zk_dao_cli_v0_0_4.aleo;
 
 record zk_dao_token:
     owner as address.private;
@@ -22,7 +22,7 @@ mapping initial_airdrop_claimed:
 function join_dao:
     input r0 as address.private;
     async join_dao r0 into r1;
-    output r1 as zk_dao_cli_v0_0_3.aleo/join_dao.future;
+    output r1 as zk_dao_cli_v0_0_4.aleo/join_dao.future;
 
 finalize join_dao:
     input r0 as address.public;
@@ -30,11 +30,17 @@ finalize join_dao:
 
 
 function claim_airdrop:
-    cast self.caller 1000u64 into r0 as zk_dao_token.record;
-    async claim_airdrop self.caller into r1;
-    output r0 as zk_dao_token.record;
-    output r1 as zk_dao_cli_v0_0_3.aleo/claim_airdrop.future;
+    input r0 as address.private;
+    assert.eq r0 self.caller;
+    cast self.caller 1000u64 into r1 as zk_dao_token.record;
+    async claim_airdrop r0 into r2;
+    output r1 as zk_dao_token.record;
+    output r2 as zk_dao_cli_v0_0_4.aleo/claim_airdrop.future;
 
 finalize claim_airdrop:
     input r0 as address.public;
+    contains initial_airdrop_claimed[r0] into r1;
+    contains dao_members[r0] into r2;
+    assert.eq r2 true;
+    assert.neq r1 true;
     set true into initial_airdrop_claimed[r0];

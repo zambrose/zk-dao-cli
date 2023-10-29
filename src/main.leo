@@ -1,5 +1,5 @@
 // The 'zk_dao_cli' program.
-program zk_dao_cli_v0_0_3.aleo {
+program zk_dao_cli_v0_0_4.aleo {
     mapping dao_members: address => u8;
     mapping dao_admins: address => u8;
     mapping initial_airdrop_claimed: address => bool;
@@ -16,22 +16,24 @@ program zk_dao_cli_v0_0_3.aleo {
         amount: u64,
     }
 
-    transition claim_airdrop() -> zk_dao_token {
+    transition claim_airdrop(receiver: address) -> zk_dao_token {
+        assert_eq(receiver, self.caller);
+
         return zk_dao_token {
             owner: self.caller,
             amount: 1000u64,
-        } then finalize(self.caller);
+        } then finalize(receiver);
     }
 
     finalize claim_airdrop(user: address) {
-        // let airdrop_already_claimed: bool = Mapping::contains(initial_airdrop_claimed, user);
-        // let user_in_dao: bool = Mapping::contains(dao_members, user);
+        let airdrop_already_claimed: bool = Mapping::contains(initial_airdrop_claimed, user);
+        let user_in_dao: bool = Mapping::contains(dao_members, user);
 
         // ensure user is in the dao
-        // assert_eq(user_in_dao, true);
+        assert_eq(user_in_dao, true);
 
         // // ensure user hasn't yet claimed the airdrop
-        // assert_neq(airdrop_already_claimed, true);
+        assert_neq(airdrop_already_claimed, true);
 
         Mapping::set(initial_airdrop_claimed, user, true);
     }
