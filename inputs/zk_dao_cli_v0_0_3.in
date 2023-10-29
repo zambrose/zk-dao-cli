@@ -1,0 +1,13 @@
+// The program input for zk_dao_cli/src/main.leo
+[join_dao]
+new_member: address = aleo1ks3fdkfcapr7v93u4l46etfxk48ulwnxr7x74e9rkkkgpz30y5rsugqv0y;
+
+// [claim_airdrop]
+// receiver: address = aleo1ks3fdkfcapr7v93u4l46etfxk48ulwnxr7x74e9rkkkgpz30y5rsugqv0y;
+
+[propose]
+info: ProposalInfo = ProposalInfo {
+    title: "my proposal",
+    content: "I'd like us to build a newer DAO",
+    proposer: aleo1ks3fdkfcapr7v93u4l46etfxk48ulwnxr7x74e9rkkkgpz30y5rsugqv0y,
+};

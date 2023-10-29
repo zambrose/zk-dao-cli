@@ -1,0 +1,3 @@
+// The program input for zk_dao_cli/src/main.leo
+[join_dao]
+new_member: address = aleo1ks3fdkfcapr7v93u4l46etfxk48ulwnxr7x74e9rkkkgpz30y5rsugqv0y;
